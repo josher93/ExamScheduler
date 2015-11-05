@@ -84,31 +84,84 @@
                     <button type="submit" class="btn btn-default" style="width: 100px">
                         Add</button>
                 </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" style="width: 100px" onclick="mifuncion()">
+                        Test</button>
+                </div>
             </div>
         </div>
         </form>
     </div>
     <script type="text/javascript">
         Parse.initialize("I8j2v2nLAPbNXeHzbf2VJB2GZa0FtIZvLwjhQU9b", "bNhGiXDfV4y1pMFBF4AM5SJ0d8EgJv1RcXcxiN7A");
-      </script>
 
-
-    <!--<script type="text/javascript">
         var Groups = Parse.Object.extend("Groups");
         var query = new Parse.Query(Groups);
 
+        //Group.save({IdGroup:2,Description:"Mi Grupo"})
+
+        /*var desc = query.notEqualTo("---",
+        {
+        success: function (groups) {alert("satisfactorio")},
+        error: function (object, error) {alert("error")}
+        });
+        */
+
+        //FILLING THE GROUP DROP DOWN LIST
+        var GroupDesc = Parse.Object.extend("Groups");
+        var query = new Parse.Query(GroupDesc);
         query.find({
-            success: function (results) 
-            {
-                console.log("Total: " + results.length);
-                error: function (error) 
-                {
-                    alert("Error when getting objects!");
-                } 
+            success: function (groupDesc) {
+                var ddl = document.getElementById("ddlGroup");
+                for (i = 0; i < groupDesc.length; i++) {
+                    if(i==0)
+                    {ddl.options[i] = new Option("Select...","")}
+                    ddl.options[i+1] = new Option(groupDesc[i].get("Description"), groupDesc[i].get("IdGroup"));
+                }
+            },
+            error: function (object, error) {
+                alert("Error loading data for Groups ")
+                // The object was not retrieved successfully.
+                // error is a Parse.Error with an error code and message.
             }
         });
 
-    </script>-->
 
+        //FILLING THE LOCATION DROP DOWN LIST
+        var LocationDesc = Parse.Object.extend("Locations");
+        var queryLoc = new Parse.Query(LocationDesc);
+        queryLoc.find({
+            success: function (locationsDesc) {
+                var ddlLoc = document.getElementById("ddlLocation");
+                for (i = 0; i < locationsDesc.length; i++) {
+                    if(i==0)
+                    {ddlLoc.options[i] = new Option("Select...","")}
+                    ddlLoc.options[i+1] = new Option(locationsDesc[i].get("Description"), locationsDesc[i].get("IdLocation"));
+                }
+            },
+            error: function (object, error) {
+                alert("Error loading data for Locations ")
+            }
+        });
+
+        //FILLING THE LOCATION DROP DOWN LIST
+        var ExamDesc = Parse.Object.extend("Exams");
+        var queryLoc = new Parse.Query(ExamDesc);
+        queryLoc.find({
+            success: function (examDesc) {
+                var ddlExam = document.getElementById("ddlSubject");
+                for (i = 0; i < examDesc.length; i++) {
+                    if(i==0)
+                    {ddlExam.options[i] = new Option("Select...","")}
+                    ddlExam.options[i+1] = new Option(examDesc[i].get("Description"), examDesc[i].get("IdExam"));
+                }
+            },
+            error: function (object, error) {
+                alert("Error loading data for Subjects/Exams")
+            }
+        });
+
+
+     </script>
 </body>
 </html>
