@@ -7,6 +7,8 @@ h1
 {
     color: #FFFFFF;
     text-shadow: 2px 2px 4px #000000;
+    display: block;
+    float:  left;
 }
 
 .headerStyle
@@ -19,6 +21,7 @@ h1
 .container a:hover
 {
     text-decoration: none;
+    /*display: block;*/
 }
 
 .titleStyle
