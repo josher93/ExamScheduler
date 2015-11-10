@@ -72,6 +72,7 @@ function validateTime() {
             alert("Error: " + error.code + " " + error.message);
         }
     });
+
 }
 function alertar()
 {
