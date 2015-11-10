@@ -7,9 +7,9 @@ function save() {
     var ddlExam = document.getElementById("ddlSubject").value;
     var ddlDate = document.getElementById("txtDate").value;
     var ddlTime = document.getElementById("txtTime").value;
-    var isTimeAccepted = true;
+    var maySchedule = true;
     var myNewArrayProg = programmationArray;
-
+    var message = "";
 
     //checking if the variables are empty
     if (ddlGroup != "" && ddlLocation != "" && ddlExam != "" && ddlDate != "" && ddlTime != "") {
@@ -18,27 +18,28 @@ function save() {
         //checking if the selected date is greater than today
         if (myDate > today) {
             //checking the array
-            if (programmationArray.lenght > 0) {
+            if (programmationArray.length > 0) {
 
                 for (a in programmationArray) {
                     var myResult = programmationArray[a]; //current file
-
+                    var currentGroup = myResult.idGroup;
+                    var currentLocation = myResult.idLocation;
+                    var myProgrammedDate = new Date(myResult.programmedDate); //date
+                    var myProgrammedDate2 = new Date(myProgrammedDate);
+                    myProgrammedDate2 = myProgrammedDate2.setHours(myProgrammedDate2.getHours() + 2); //date + 2 hours in formta ajax
+                    var myNewDate = new Date(myProgrammedDate2); //date + 2 hours in normal format to compare
                     if (myResult.idGroup == ddlGroup && (myDate < myNewDate && myDate >= myProgrammedDate)) {
                         //IF THE GROUP HAS ANOHTER EXAM LETS BREAK EVERYTHING AND SHOW A MESSAGE
-                        alert("the group has already scheduled examination at this time");
+                        maySchedule = false;
+                        message = "the group has already scheduled examination at this time";
                         break;
                     }
                     else {
-                        var currentGroup = myResult.idGroup;
-                        var currentLocation = myResult.idLocation;
-                        var myProgrammedDate = new Date(myResult.programmedDate); //date
-                        var myProgrammedDate2 = new Date(myProgrammedDate);
-                        myProgrammedDate2 = myProgrammedDate2.setHours(myProgrammedDate2.getHours() + 2); //date + 2 hours in formta ajax
-                        var myNewDate = new Date(myProgrammedDate2); //date + 2 hours in normal format to compare
+                        //maySchedule = true;
                         //IS THE LOCATION THE SAME WITH ANOTHER EXAM SCHEDULED???
                         if (myResult.idLocation == ddlLocation) {
                             //YES BUT IS FOR THE SAME DAY AND TIME???
-                            if (myDate <= myNewDate && myDate >= myProgrammedDate) {
+                            if (myDate <= myNewDate && myDate >= myProgrammedDate && myResult.idGroup == ddlGroup) {
                                 //YES, BUT IS THERE ENOUGH SPACE FOR BOTH GRUOPS
                                 var myLocationSeats;
                                 var myNumberOfStudents;
@@ -76,24 +77,28 @@ function save() {
                                 }
                                 //ADDING THE NUMBERS OF STUDENTS FROM MY CURRENT GROUP
                                 newNumberOfStudents += myNumberOfStudents;
-                                if (myLocationSeats > newNumberOfStudents) {
+                                if (myLocationSeats > newNumberOfStudents ) {
                                     //YES SURE IT IS!!! LETS SCHEDULE THE EXAM
-                                    schedule(ddlGroup, ddlLocation, ddlExam, myDate);
+                                    maySchedule = true;
+                                    break;
+                                    //schedule(ddlGroup, ddlLocation, ddlExam, myDate);
                                 }
                                 else {
                                     //SORRY THERE ARE NOT ENOUGH SEATS
-                                    alert("This location has another scheduled examination at this time and there are not enough seats");
+                                    maySchedule = false;
+                                    message = "This location has another scheduled examination at this time and there are not enough seats";
                                 }
 
                             }
                             else {
                                 //LETS SCHEDULE THE EXAM
-                                schedule(ddlGroup, ddlLocation, ddlExam, myDate);
+                                //schedule(ddlGroup, ddlLocation, ddlExam, myDate);
                             }
                         }
                         else {
                             //NO THEY DONT, SO LETS SCHEDULE THE EXAM
-                            schedule(ddlGroup, ddlLocation, ddlExam, myDate);
+                            //DO THEY HAVE ANOTHER EXAM SCHEDULED???
+                             //maySchedule = true;                           
                         }
                     }
                 }
@@ -101,16 +106,26 @@ function save() {
             else
             {
                 //THERE IS NO LIST!!! LETS SCHEDULE THE EXAM
-                schedule(ddlGroup, ddlLocation, ddlExam, myDate);
+                //maySchedule = true;  
             }
         }
         else {
-            alert("to schedule an exam, date must be greater than the current");
+            maySchedule = false;
+            message = "to schedule an exam, date must be greater than the current";
         }
+        if(maySchedule)
+        {
+            schedule(ddlGroup,ddlLocation,ddlExam,myDate)
+        }
+        else
+        {
+            alert(message);
+        }
+
     }
 }
 
-function schedule(group, location, exam, dateProgrammed) {
+function schedule(group,location,exam, dateProgrammed)  {
     var Programmation = Parse.Object.extend("Programmation");
     var programmation = new Programmation();
     programmation.save({
@@ -118,7 +133,7 @@ function schedule(group, location, exam, dateProgrammed) {
         IdLocation: parseInt(location),
         IdExam: parseInt(exam),
         Date: dateProgrammed
-    }, {
+        }, {
         success: function (programmation) {
             // Execute any logic that should take place after the object is saved.
             alert('New row created!!!');
