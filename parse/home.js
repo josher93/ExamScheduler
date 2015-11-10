@@ -25,7 +25,7 @@ function save() {
                     var myNewDate = new Date(myProgrammedDate2);
                     if(myDate< myNewDate && myDate >=myProgrammedDate)
                     {
-                        alert("The group has already a exam at this time!!!");
+                        alert("The group has already a exam at this time");
                     }
                 }
             }
