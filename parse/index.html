@@ -11,20 +11,24 @@
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
         <script type="text/javascript" src="home.js"></script>
+        <script type="text/javascript" src="users.js"></script>
         <!-- HTML5 shim and O Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
                     <!--[if lt IE 9]>
-                            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-                            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-                            <![endif]-->
+                    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+                    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+                    <![endif]-->
     </head>
     <body>
         <header id="header" class="headerStyle">
             <div class="container">
-                <a href="index.html">
+                <a class="logo_lnk" href="index.html">
                     <h1>Exam Scheduler</h1>
                 </a>
+                <div id="account" class="navbar-right">
+                    <a href="login.html" onclick="logout()" >Log Out</a>
+                </div>
             </div>
         </header>
         <div class="container">
@@ -95,8 +99,8 @@
                         -->
                     </div>
                 </div>
-               <div class="titleStyle">
-                   <br>
+                <div class="titleStyle">
+                    <br>
                     <h2>Programmated Exams</h2>
                 </div>
 
@@ -248,7 +252,6 @@
                     alert("Error loading data for Programmed Exams")
                 }
             });
-
         </script>
     </body>
 </html>

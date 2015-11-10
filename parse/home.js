@@ -56,6 +56,23 @@ function save() {
     else
     { alert(programmationArray.toString()); }
 }
+
+
+function validateTime() {
+    var existingTime = Parse.Object.extend("Programmation");
+    var queryTime = new Parse.Query(existingTime);
+    var examDate = new Date(document.getElementById("txtDate").value + " " + document.getElementById("txtTime").value)
+    query.equalTo("Date", examDate);
+    query.first({
+        success: function (object) {
+            // Successfully retrieved the object.
+            existsTime = true;
+        },
+        error: function (error) {
+            alert("Error: " + error.code + " " + error.message);
+        }
+    });
+}
 function alertar()
 {
     alert(document.getElementById("ddlGroup").value);
@@ -63,3 +80,4 @@ function alertar()
     alert(document.getElementById("ddlSubject").value);
     alert(document.getElementById("txtDate").value + " " + document.getElementById("txtTime").value)
 }
+
