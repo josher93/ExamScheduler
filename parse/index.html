@@ -91,6 +91,12 @@
                             <button type="submit" class="btn btn-default btn-primary" onclick="save()" style="width: 100px">
                         Add</button>
                         </div>
+                        <!--
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default btn-primary" onclick="alertar()" style="width: 100px">
+                        Alert</button>
+                        </div>
+                        -->
                     </div>
                 </div>
                 <div class="titleStyle">
@@ -129,6 +135,8 @@
             var groupsArray = new Array();
             var locationsArray = new Array();
             var examsArray = new Array();
+            var programmationArray = new Array();
+
             //FILLING THE GROUP DROP DOWN LIST
             var GroupDesc = Parse.Object.extend("Groups");
             var query = new Parse.Query(GroupDesc);
@@ -159,9 +167,8 @@
                 success: function (locationsDesc) {
                     var ddlLoc = document.getElementById("ddlLocation");
                     for (i = 0; i < locationsDesc.length; i++) {
-                        if (i == 0)
-                        { 
-                            ddlLoc.options[i] = new Option("Select...", "") 
+                        if (i == 0) {
+                            ddlLoc.options[i] = new Option("Select...", "")
                         }
                         ddlLoc.options[i + 1] = new Option(locationsDesc[i].get("Description"), locationsDesc[i].get("IdLocation"));
                         locationsArray.push({
@@ -204,6 +211,14 @@
                     var mytable = document.getElementsByTagName("tbody")[0];
             
                     for (i = 0; i < prog.length; i++) {
+
+                         programmationArray.push({
+                            idExam: prog[i].get("IdExam"),
+                            idLocation: prog[i].get("IdLocation"),
+                            idGroup: prog[i].get("IdGroup"),
+                            programmedDate: prog[i].get("Date")
+                        });
+                        
                         var myrow = mytable.insertRow(i);
             
                         var cell1 = myrow.insertCell(0);
@@ -238,7 +253,6 @@
                     alert("Error loading data for Programmed Exams")
                 }
             });
-            
         </script>
     </body>
 </html>
