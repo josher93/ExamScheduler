@@ -10,6 +10,7 @@ function save() {
     var isTimeAccepted = true;
     var myNewArrayProg = programmationArray;
 
+
     //checking if the variables are empty
     if (ddlGroup != "" && ddlLocation != "" && ddlExam != "" && ddlDate != "" && ddlTime != "") {
         var myDate = new Date(ddlDate + " " + ddlTime);
