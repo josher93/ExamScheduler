@@ -23,13 +23,26 @@ function save() {
                     var myProgrammedDate2 = new Date(myProgrammedDate);
                     myProgrammedDate2 = myProgrammedDate2.setHours(myProgrammedDate2.getHours()+2);
                     var myNewDate = new Date(myProgrammedDate2);
-                    if(myDate< myNewDate && myDate >=myProgrammedDate)
+
+                }
+            }
+        }
+        else {
+            alert("to schedule an exam, date must be greater than the current");
+        }
+    }
+}
+
+
+            /*                    
+            
+            
+            if(myDate< myNewDate && myDate >=myProgrammedDate)
                     {
                         alert("The group has already a exam at this time");
                     }
-                }
-            }
-            /*
+
+
             var Programmation = Parse.Object.extend("Programmation");
             var programmation = new Programmation();
             programmation.save({
@@ -48,37 +61,4 @@ function save() {
                     //alert('Failed to create new object, with error code: ' + error.message);
                 }
             });*/
-        }
-        else {
-            alert("Date must be higher than " + today.toString());
-        }
-    }
-    else
-    { alert(programmationArray.toString()); }
-}
-
-
-function validateTime() {
-    var existingTime = Parse.Object.extend("Programmation");
-    var queryTime = new Parse.Query(existingTime);
-    var examDate = new Date(document.getElementById("txtDate").value + " " + document.getElementById("txtTime").value)
-    query.equalTo("Date", examDate);
-    query.first({
-        success: function (object) {
-            // Successfully retrieved the object.
-            existsTime = true;
-        },
-        error: function (error) {
-            alert("Error: " + error.code + " " + error.message);
-        }
-    });
-
-}
-function alertar()
-{
-    alert(document.getElementById("ddlGroup").value);
-    alert(document.getElementById("ddlLocation").value);
-    alert(document.getElementById("ddlSubject").value);
-    alert(document.getElementById("txtDate").value + " " + document.getElementById("txtTime").value)
-}
 
