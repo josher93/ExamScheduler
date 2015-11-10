@@ -1,36 +1,41 @@
-﻿body
-{
+﻿body {
     padding-top: 0px;
 }
 
-h1
-{
+h1 {
     color: #FFFFFF;
     text-shadow: 2px 2px 4px #000000;
     display: block;
-    float:  left;
+    float: left;
 }
 
-.headerStyle
-{
+.headerStyle {
     background-color: #0070C0;
     height: 100px;
     padding-top: 20px;
 }
 
-.container a:hover
-{
+.container a:hover {
     text-decoration: none;
     /*display: block;*/
 }
 
-.titleStyle
-{
-    
+.logo_lnk {
+    display: block;
+    float: left;
+    text-decoration: none;
+    position: relative;
+}
+
+.logo_lnk:hover {
+    text-decoration: none;
+}
+
+.titleStyle {
     display: block;
 }
-.titleStyle h2
-{
+
+.titleStyle h2 {
     font-family: 'Roboto Condensed', sans-serif;
     color: #4c4c4c;
     font-size: 24px;
@@ -41,12 +46,12 @@ h1
     margin-top: 35px;
 }
 
-#account a{
-    color:  #FFFFFF;
+#account a {
+    color: #FFFFFF;
     text-decoration: none;
     font-size: 16px;
 }
 
-#account a:hover{
-    text-decoration:  underline;
+#account a:hover {
+    text-decoration: underline;
 }
