@@ -93,3 +93,16 @@ function guestInterface() {
         btnAdd.disabled = true;
     }
 }
+
+function isGuest() {
+
+    var isguest = false;
+    var guest = localStorage.getItem("guestUser");
+    var user = localStorage.getItem("parseUser");
+
+    if (user == "false" && guest == "true") {
+        isguest = true;
+    }
+
+    return isguest;
+}

@@ -17,17 +17,17 @@
         <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
                     <!--<script type="text/javascript">
-                        $(document).ready(function() {
-                            $('#tblExams').DataTable();
-                        });
-                    </script>-->
+                                    $(document).ready(function() {
+                                        $('#tblExams').DataTable();
+                                    });
+                                </script>-->
         <!-- HTML5 shim and O Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
                     <!--[if lt IE 9]>
-                        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-                        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-                        <![endif]-->
+                                    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+                                    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+                                    <![endif]-->
     </head>
     <body>
         <header id="header" class="headerStyle">
@@ -133,9 +133,9 @@
         <script type="text/javascript">
             Parse.initialize("I8j2v2nLAPbNXeHzbf2VJB2GZa0FtIZvLwjhQU9b", "bNhGiXDfV4y1pMFBF4AM5SJ0d8EgJv1RcXcxiN7A");
             if (LoggedIn()) {
-
+            
                 guestInterface();
-
+            
                 var Groups = Parse.Object.extend("Groups");
                 var query = new Parse.Query(Groups);
                 var groupsArray = new Array();
@@ -245,7 +245,7 @@
                     var cell3 = myrow.insertCell(2);
                     var cell4 = myrow.insertCell(3);
                     var cell5 = myrow.insertCell(4);
-
+            
                     for (x in groupsArray) {
                         var result = groupsArray[x];
                         if (result.groupId == result2.idGroup) {
@@ -265,21 +265,25 @@
                         }
                     }
                     cell4.innerHTML = formatedDate(result2.programmedDate);
-                    //ADDING DELETE BUTTON TO DELETE SCHEDULES
-                    var btnDelete = document.createElement("button");
-                    var icon = document.createElement("span");
-                    icon.setAttribute("class", "glyphicon glyphicon-trash");
-                    icon.setAttribute("aria-hidden", "true");
-                    btnDelete.setAttribute("id", result2.id);
-                    btnDelete.setAttribute("type", "button");
-                    btnDelete.setAttribute("class", "btn btn-default btn_textcolor");
-                    btnDelete.setAttribute("aria-label", "Justify");
-                    btnDelete.appendChild(icon);
-                    btnDelete.addEventListener("click", function () {
-                        var objectId = this.id;
-                        deleteProgrammation(objectId);
-                    })
-                    cell5.appendChild(btnDelete);
+                    //CHECK USER IS GUEST
+                    if (!isGuest())
+                    {
+                        //ADDING DELETE BUTTON TO DELETE SCHEDULES
+                        var btnDelete = document.createElement("button");
+                        var icon = document.createElement("span");
+                        icon.setAttribute("class", "glyphicon glyphicon-trash");
+                        icon.setAttribute("aria-hidden", "true");
+                        btnDelete.setAttribute("id", result2.id);
+                        btnDelete.setAttribute("type", "button");
+                        btnDelete.setAttribute("class", "btn btn-default btn_textcolor");
+                        btnDelete.setAttribute("aria-label", "Justify");
+                        btnDelete.appendChild(icon);
+                        btnDelete.addEventListener("click", function () {
+                            var objectId = this.id;
+                            deleteProgrammation(objectId);
+                        })
+                        cell5.appendChild(btnDelete); 
+                    }
                 }
             }
         </script>
