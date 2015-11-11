@@ -31,7 +31,7 @@ function save() {
                     if (myResult.idGroup == ddlGroup && (myDate < myNewDate && myDate >= myProgrammedDate)) {
                         //IF THE GROUP HAS ANOHTER EXAM LETS BREAK EVERYTHING AND SHOW A MESSAGE
                         maySchedule = false;
-                        message = "the group has already scheduled examination at this time";
+                        message = "The group has already scheduled exams at this time";
                         break;
                     }
                     else {
@@ -63,7 +63,7 @@ function save() {
                         }
                         if (myLocationSeats < myNumberOfStudents && myNumberOfStudents != 0 && myLocationSeats != 0) {
                             maySchedule = false;
-                            message = "There are not enough seats for the students";
+                            message = "There are not enough seats available";
                         }
                         else {
                             if (myResult.idLocation == ddlLocation) {
@@ -118,7 +118,7 @@ function save() {
                                     else {
                                         //SORRY THERE ARE NOT ENOUGH SEATS
                                         maySchedule = false;
-                                        message = "This location has another scheduled examination at this time and there are not enough seats";
+                                        message = "This location has another scheduled examination at this time and there are not enough seats available";
                                     }
 
                                 }
@@ -165,14 +165,14 @@ function save() {
                 }
                 if (myLocationSeats < myNumberOfStudents) {
                     maySchedule = false;
-                    message = "There are not enough seats for the students";
+                    message = "There are not enough seats available.";
                 }
 
             }
         }
         else {
             maySchedule = false;
-            message = "to schedule an exam, date must be greater than the current";
+            message = "To schedule an exam, date must be greater than current date.";
         }
         if(maySchedule)
         {
