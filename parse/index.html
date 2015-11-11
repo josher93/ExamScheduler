@@ -154,7 +154,7 @@
                             groupsArray.push({
                                 groupDescription: groupDesc[i].get("Description"),
                                 groupId: groupDesc[i].get("IdGroup"),
-                                numberOfStudents:groupDesc[i].get("Students")
+                                numberOfStudents: groupDesc[i].get("Students")
                             });
                         }
                     },
@@ -209,51 +209,17 @@
                 var queryProg = new Parse.Query(Prog);
                 queryProg.find({
                     success: function (prog) {
-                        var mytable = document.getElementsByTagName("tbody")[0];
+
                         for (i = 0; i < prog.length; i++) {
                             programmationArray.push({
                                 idExam: prog[i].get("IdExam"),
                                 idLocation: prog[i].get("IdLocation"),
                                 idGroup: prog[i].get("IdGroup"),
-                                programmedDate: prog[i].get("Date")
+                                programmedDate: prog[i].get("Date"),
+                                id:prog[i].get("objectId")
                             });
-
-                            var myrow = mytable.insertRow(i);
-                            var cell1 = myrow.insertCell(0);
-                            var cell2 = myrow.insertCell(1);
-                            var cell3 = myrow.insertCell(2);
-                            var cell4 = myrow.insertCell(3);
-                            var cell5 = myrow.insertCell(4);
-                            for (x in groupsArray) {
-                                var result = groupsArray[x];
-                                if (result.groupId == prog[i].get("IdGroup")) {
-                                    cell1.innerHTML = result.groupDescription;
-                                }
-                            }
-                            for (y in locationsArray) {
-                                var resultloc = locationsArray[y];
-                                if (resultloc.locId == prog[i].get("IdLocation")) {
-                                    cell2.innerHTML = resultloc.locDescription;
-                                }
-                            }
-                            for (z in examsArray) {
-                                var resultExam = examsArray[z];
-                                if (resultExam.examId == prog[i].get("IdExam")) {
-                                    cell3.innerHTML = resultExam.examDescription;
-                                }
-                            }
-
-                            cell4.innerHTML = formatedDate(prog[i].get("Date"));
-                            //ADDING DELETE BUTTON TO DELETE SCHEDULES
-                            var btnDelete = document.createElement("input");
-                            var objectId = prog[i].id;
-                            btnDelete.setAttribute("value", "Delete");
-                            btnDelete.setAttribute("type", "button");
-                            btnDelete.onclick = function() { runCommand(objectId) };
-                            cell5.appendChild(btnDelete);
-                            //cell5.innerHTML = prog[i].id;
                         }
-
+                        fillTable(groupsArray, locationsArray, examsArray, programmationArray);
                         $('#tblExams').DataTable({
                             "ordering": false,
                             "searching": false,
@@ -266,6 +232,48 @@
                         alert("Error loading data for Programmed Exams")
                     }
                 });
+            }
+            function fillTable(groupsArray, locationsArray, examsArray, programmationArray) {
+
+                var mytable = document.getElementsByTagName("tbody")[0];
+                for (k in programmationArray) {
+                    var result2 = programmationArray[k];
+                    var myrow = mytable.insertRow(k);
+                    var cell1 = myrow.insertCell(0);
+                    var cell2 = myrow.insertCell(1);
+                    var cell3 = myrow.insertCell(2);
+                    var cell4 = myrow.insertCell(3);
+                    var cell5 = myrow.insertCell(4);
+                    for (x in groupsArray) {
+                        var result = groupsArray[x];
+                        if (result.groupId == result2.idGroup) {
+                            cell1.innerHTML = result.groupDescription;
+                        }
+                    }
+                    for (y in locationsArray) {
+                        var resultloc = locationsArray[y];
+                        if (resultloc.locId == result2.idLocation) {
+                            cell2.innerHTML = resultloc.locDescription;
+                        }
+                    }
+                    for (z in examsArray) {
+                        var resultExam = examsArray[z];
+                        if (resultExam.examId == result2.idExam) {
+                            cell3.innerHTML = resultExam.examDescription;
+                        }
+                    }
+
+                    cell4.innerHTML = formatedDate(result2.programmedDate);
+
+                    //ADDING DELETE BUTTON TO DELETE SCHEDULES
+                    var btnDelete = document.createElement("input");
+                    var objectId = result2.id;
+                    btnDelete.setAttribute("value", "Delete");
+                    btnDelete.setAttribute("type", "button");
+                    btnDelete.onclick = function () { runCommand(objectId) };
+                    cell5.appendChild(btnDelete);
+                    //cell5.innerHTML = prog[i].id;
+                }
             }
 
         </script>
