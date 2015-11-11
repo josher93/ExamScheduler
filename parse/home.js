@@ -202,7 +202,7 @@ function schedule(group,location,exam, dateProgrammed)  {
         error: function (programmation, error) {
             // Execute any logic that should take place if the save fails.
             // error is a Parse.Error with an error code and message.
-            alert('Failed to create new row ');
+            //alert('Failed to create new row ');
         }
     });
 }
