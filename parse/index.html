@@ -133,9 +133,9 @@
         <script type="text/javascript">
             Parse.initialize("I8j2v2nLAPbNXeHzbf2VJB2GZa0FtIZvLwjhQU9b", "bNhGiXDfV4y1pMFBF4AM5SJ0d8EgJv1RcXcxiN7A");
             if (LoggedIn()) {
-            
+
                 guestInterface();
-            
+
                 var Groups = Parse.Object.extend("Groups");
                 var query = new Parse.Query(Groups);
                 var groupsArray = new Array();
@@ -245,29 +245,31 @@
                     var cell3 = myrow.insertCell(2);
                     var cell4 = myrow.insertCell(3);
                     var cell5 = myrow.insertCell(4);
-            
+
                     for (x in groupsArray) {
                         var result = groupsArray[x];
                         if (result.groupId == result2.idGroup) {
                             cell1.innerHTML = result.groupDescription;
+                            break;
                         }
                     }
                     for (y in locationsArray) {
                         var resultloc = locationsArray[y];
                         if (resultloc.locId == result2.idLocation) {
                             cell2.innerHTML = resultloc.locDescription;
+                            break;
                         }
                     }
                     for (z in examsArray) {
                         var resultExam = examsArray[z];
                         if (resultExam.examId == result2.idExam) {
                             cell3.innerHTML = resultExam.examDescription;
+                            break;
                         }
                     }
                     cell4.innerHTML = formatedDate(result2.programmedDate);
                     //CHECK USER IS GUEST
-                    if (!isGuest())
-                    {
+                    if (!isGuest()) {
                         //ADDING DELETE BUTTON TO DELETE SCHEDULES
                         var btnDelete = document.createElement("button");
                         var icon = document.createElement("span");
@@ -282,7 +284,7 @@
                             var objectId = this.id;
                             deleteProgrammation(objectId);
                         })
-                        cell5.appendChild(btnDelete); 
+                        cell5.appendChild(btnDelete);
                     }
                 }
             }

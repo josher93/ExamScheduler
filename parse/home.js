@@ -42,22 +42,26 @@ function save() {
                         var myNumberOfStudents = 0; ;
 
                         //GETTING NUMBER OF STUDENS OF THE GROUP
-                        for (x in groupsArray) {
-                            var result = groupsArray[x];
-                            var grupoid = result.groupId;
-                            if (grupoid == currentGroup) {
-                                myNumberOfStudents = result.numberOfStudents;
+                        if (myResult.idLocation == ddlLocation) {
+                            for (x in groupsArray) {
+                                var result = groupsArray[x];
+                                var grupoid = result.groupId;
+                                if (grupoid == currentGroup && currentGroup == ddlGroup) {
+                                    myNumberOfStudents = result.numberOfStudents;
+                                    break;
+                                }
+                            }
+                            //GETTING NUMBER OF SEATS FROM THE LOCATION
+                            for (y in locationsArray) {
+                                var resultloc = locationsArray[y];
+                                var locid = resultloc.locId;
+                                if (locid == currentLocation) {
+                                    myLocationSeats = resultloc.availableSeats;
+                                    break;
+                                }
                             }
                         }
-                        //GETTING NUMBER OF SEATS FROM THE LOCATION
-                        for (y in locationsArray) {
-                            var resultloc = locationsArray[y];
-                            var locid = resultloc.locId;
-                            if (locid == currentLocation) {
-                                myLocationSeats = resultloc.availableSeats;
-                            }
-                        }
-                        if (myLocationSeats < myNumberOfStudents) {
+                        if (myLocationSeats < myNumberOfStudents && myNumberOfStudents != 0 && myLocationSeats != 0) {
                             maySchedule = false;
                             message = "There are not enough seats for the students";
                         }
@@ -77,6 +81,7 @@ function save() {
                                         var grupoid = result.groupId;
                                         if (grupoid == currentGroup) {
                                             myNumberOfStudents = result.numberOfStudents;
+                                            break;
                                         }
                                     }
                                     //GETTING NUMBER OF SEATS FROM THE LOCATION
@@ -85,6 +90,7 @@ function save() {
                                         var locid = resultloc.locId;
                                         if (locid == currentLocation) {
                                             myLocationSeats = resultloc.availableSeats;
+                                            break;
                                         }
                                     }
                                     //CHECIKNG HOW MANY GROUPS ARE IN THE SAME LOCATION AT THE SAME TIME
@@ -145,6 +151,7 @@ function save() {
                     var grupoid = result.groupId;
                     if (grupoid == currentGroup) {
                         myNumberOfStudents = result.numberOfStudents;
+                        break;
                     }
                 }
                 //GETTING NUMBER OF SEATS FROM THE LOCATION
@@ -153,6 +160,7 @@ function save() {
                     var locid = resultloc.locId;
                     if (locid == currentLocation) {
                         myLocationSeats = resultloc.availableSeats;
+                        break;
                     }
                 }
                 if (myLocationSeats < myNumberOfStudents) {
