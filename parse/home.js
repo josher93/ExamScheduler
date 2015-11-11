@@ -65,12 +65,11 @@ function save() {
                                 //CHECIKNG HOW MANY GROUPS ARE IN THE SAME LOCATION AT THE SAME TIME
                                 for (z in myNewArrayProg) {
                                     var resultprog = myNewArrayProg[z];
-                                    if (resultprog.idLocation == currentLocation && (myDate <= myNewDate && myDate >= myProgrammedDate)) {
-                                        groupsMatching = resultprog.idGroup;
+                                    if (resultprog.idLocation == currentLocation && (myDate < myNewDate && myDate >= myProgrammedDate)) {
                                         //GETTING THE NUMBER OF STUDENTS FROM THOSE GROUPS THAT MATCH
                                         for (b in groupsArray) {
                                             var resultB = groupsArray[b];
-                                            if (resultB.groupId == groupsMatching) {
+                                            if (resultB.groupId == ddlGroup) {
                                                 //ADDING NUMBER OF STUDENTS
                                                 newNumberOfStudents += resultB.numberOfStudents;
                                             }
