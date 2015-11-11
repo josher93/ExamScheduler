@@ -153,7 +153,8 @@
                             ddl.options[i + 1] = new Option(groupDesc[i].get("Description"), groupDesc[i].get("IdGroup"));
                             groupsArray.push({
                                 groupDescription: groupDesc[i].get("Description"),
-                                groupId: groupDesc[i].get("IdGroup")
+                                groupId: groupDesc[i].get("IdGroup"),
+                                numberOfStudents:groupDesc[i].get("Students")
                             });
                         }
                     },
@@ -174,7 +175,8 @@
                             ddlLoc.options[i + 1] = new Option(locationsDesc[i].get("Description"), locationsDesc[i].get("IdLocation"));
                             locationsArray.push({
                                 locDescription: locationsDesc[i].get("Description"),
-                                locId: locationsDesc[i].get("IdLocation")
+                                locId: locationsDesc[i].get("IdLocation"),
+                                availableSeats: locationsDesc[i].get("Seats")
                             });
                         }
                     },

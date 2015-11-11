@@ -39,24 +39,26 @@ function save() {
                         //IS THE LOCATION THE SAME WITH ANOTHER EXAM SCHEDULED???
                         if (myResult.idLocation == ddlLocation) {
                             //YES BUT IS FOR THE SAME DAY AND TIME???
-                            if (myDate <= myNewDate && myDate >= myProgrammedDate && myResult.idGroup == ddlGroup) {
+                            if (myDate <= myNewDate && myDate >= myProgrammedDate) {
                                 //YES, BUT IS THERE ENOUGH SPACE FOR BOTH GRUOPS
-                                var myLocationSeats;
-                                var myNumberOfStudents;
+                                var myLocationSeats = 0;
+                                var myNumberOfStudents = 0;
                                 var newNumberOfStudents = 0;
                                 var groupsMatching = 0;
 
                                 //GETTING NUMBER OF STUDENS OF THE GROUP
                                 for (x in groupsArray) {
                                     var result = groupsArray[x];
-                                    if (result.groupId == currentGroup) {
+                                    var grupoid = result.groupId;
+                                    if (grupoid == currentGroup) {
                                         myNumberOfStudents = result.numberOfStudents;
                                     }
                                 }
                                 //GETTING NUMBER OF SEATS FROM THE LOCATION
                                 for (y in locationsArray) {
                                     var resultloc = locationsArray[y];
-                                    if (resultloc.locId == currentLocation) {
+                                    var locid = resultloc.locId;
+                                    if (locid == currentLocation) {
                                         myLocationSeats = resultloc.availableSeats;
                                     }
                                 }
