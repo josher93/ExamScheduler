@@ -37,77 +37,129 @@ function save() {
                     else {
                         //maySchedule = true;
                         //IS THE LOCATION THE SAME WITH ANOTHER EXAM SCHEDULED???
-                        if (myResult.idLocation == ddlLocation) {
-                            //YES BUT IS FOR THE SAME DAY AND TIME???
-                            if (myDate <= myNewDate && myDate >= myProgrammedDate) {
-                                //YES, BUT IS THERE ENOUGH SPACE FOR BOTH GRUOPS
-                                var myLocationSeats = 0;
-                                var myNumberOfStudents = 0;
-                                var newNumberOfStudents = 0;
-                                var groupsMatching = 0;
+                        //YES, BUT IS THERE ENOUGH SPACE FOR BOTH GRUOPS
+                        var myLocationSeats = 0;
+                        var myNumberOfStudents = 0; ;
 
-                                //GETTING NUMBER OF STUDENS OF THE GROUP
-                                for (x in groupsArray) {
-                                    var result = groupsArray[x];
-                                    var grupoid = result.groupId;
-                                    if (grupoid == currentGroup) {
-                                        myNumberOfStudents = result.numberOfStudents;
+                        //GETTING NUMBER OF STUDENS OF THE GROUP
+                        for (x in groupsArray) {
+                            var result = groupsArray[x];
+                            var grupoid = result.groupId;
+                            if (grupoid == currentGroup) {
+                                myNumberOfStudents = result.numberOfStudents;
+                            }
+                        }
+                        //GETTING NUMBER OF SEATS FROM THE LOCATION
+                        for (y in locationsArray) {
+                            var resultloc = locationsArray[y];
+                            var locid = resultloc.locId;
+                            if (locid == currentLocation) {
+                                myLocationSeats = resultloc.availableSeats;
+                            }
+                        }
+                        if (myLocationSeats < myNumberOfStudents) {
+                            maySchedule = false;
+                            message = "There are not enough seats for the students";
+                        }
+                        else {
+                            if (myResult.idLocation == ddlLocation) {
+                                //YES BUT IS FOR THE SAME DAY AND TIME???
+                                if (myDate <= myNewDate && myDate >= myProgrammedDate) {
+                                    //YES, BUT IS THERE ENOUGH SPACE FOR BOTH GRUOPS
+                                    var myLocationSeats = 0;
+                                    var myNumberOfStudents = 0;
+                                    var newNumberOfStudents = 0;
+                                    var groupsMatching = 0;
+
+                                    //GETTING NUMBER OF STUDENS OF THE GROUP
+                                    for (x in groupsArray) {
+                                        var result = groupsArray[x];
+                                        var grupoid = result.groupId;
+                                        if (grupoid == currentGroup) {
+                                            myNumberOfStudents = result.numberOfStudents;
+                                        }
                                     }
-                                }
-                                //GETTING NUMBER OF SEATS FROM THE LOCATION
-                                for (y in locationsArray) {
-                                    var resultloc = locationsArray[y];
-                                    var locid = resultloc.locId;
-                                    if (locid == currentLocation) {
-                                        myLocationSeats = resultloc.availableSeats;
+                                    //GETTING NUMBER OF SEATS FROM THE LOCATION
+                                    for (y in locationsArray) {
+                                        var resultloc = locationsArray[y];
+                                        var locid = resultloc.locId;
+                                        if (locid == currentLocation) {
+                                            myLocationSeats = resultloc.availableSeats;
+                                        }
                                     }
-                                }
-                                //CHECIKNG HOW MANY GROUPS ARE IN THE SAME LOCATION AT THE SAME TIME
-                                for (z in myNewArrayProg) {
-                                    var resultprog = myNewArrayProg[z];
-                                    if (resultprog.idLocation == currentLocation && (myDate < myNewDate && myDate >= myProgrammedDate)) {
-                                        //GETTING THE NUMBER OF STUDENTS FROM THOSE GROUPS THAT MATCH
-                                        for (b in groupsArray) {
-                                            var resultB = groupsArray[b];
-                                            if (resultB.groupId == ddlGroup) {
-                                                //ADDING NUMBER OF STUDENTS
-                                                newNumberOfStudents += resultB.numberOfStudents;
+                                    //CHECIKNG HOW MANY GROUPS ARE IN THE SAME LOCATION AT THE SAME TIME
+                                    for (z in myNewArrayProg) {
+                                        var resultprog = myNewArrayProg[z];
+                                        if (resultprog.idLocation == currentLocation && (myDate < myNewDate && myDate >= myProgrammedDate)) {
+                                            //GETTING THE NUMBER OF STUDENTS FROM THOSE GROUPS THAT MATCH
+                                            for (b in groupsArray) {
+                                                var resultB = groupsArray[b];
+                                                if (resultB.groupId == ddlGroup) {
+                                                    //ADDING NUMBER OF STUDENTS
+                                                    newNumberOfStudents += resultB.numberOfStudents;
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                //ADDING THE NUMBERS OF STUDENTS FROM MY CURRENT GROUP
-                                newNumberOfStudents += myNumberOfStudents;
-                                if (myLocationSeats > newNumberOfStudents ) {
-                                    //YES SURE IT IS!!! LETS SCHEDULE THE EXAM
-                                    maySchedule = true;
-                                    break;
-                                    //schedule(ddlGroup, ddlLocation, ddlExam, myDate);
+                                    //ADDING THE NUMBERS OF STUDENTS FROM MY CURRENT GROUP
+                                    newNumberOfStudents += myNumberOfStudents;
+                                    if (myLocationSeats > newNumberOfStudents) {
+                                        //YES SURE IT IS!!! LETS SCHEDULE THE EXAM
+                                        maySchedule = true;
+                                        break;
+                                        //schedule(ddlGroup, ddlLocation, ddlExam, myDate);
+                                    }
+                                    else {
+                                        //SORRY THERE ARE NOT ENOUGH SEATS
+                                        maySchedule = false;
+                                        message = "This location has another scheduled examination at this time and there are not enough seats";
+                                    }
+
                                 }
                                 else {
-                                    //SORRY THERE ARE NOT ENOUGH SEATS
-                                    maySchedule = false;
-                                    message = "This location has another scheduled examination at this time and there are not enough seats";
-                                }
+                                    //LETS SCHEDULE THE EXAM BUT IS THE ROOM BIG ENOUGHT
 
+                                    //schedule(ddlGroup, ddlLocation, ddlExam, myDate);
+                                }
                             }
+
                             else {
-                                //LETS SCHEDULE THE EXAM
-                                //schedule(ddlGroup, ddlLocation, ddlExam, myDate);
+                                //NO THEY DONT, SO LETS SCHEDULE THE EXAM
+                                //DO THEY HAVE ANOTHER EXAM SCHEDULED???
+                                //maySchedule = true;                           
                             }
-                        }
-                        else {
-                            //NO THEY DONT, SO LETS SCHEDULE THE EXAM
-                            //DO THEY HAVE ANOTHER EXAM SCHEDULED???
-                             //maySchedule = true;                           
                         }
                     }
                 }
             }
-            else
-            {
+            else {
                 //THERE IS NO LIST!!! LETS SCHEDULE THE EXAM
                 //maySchedule = true;  
+                var myLocationSeats = 0;
+                var myNumberOfStudents = 0; ;
+                var currentGroup =ddlGroup;
+                var currentLocation = ddlLocation;
+                //GETTING NUMBER OF STUDENS OF THE GROUP
+                for (x in groupsArray) {
+                    var result = groupsArray[x];
+                    var grupoid = result.groupId;
+                    if (grupoid == currentGroup) {
+                        myNumberOfStudents = result.numberOfStudents;
+                    }
+                }
+                //GETTING NUMBER OF SEATS FROM THE LOCATION
+                for (y in locationsArray) {
+                    var resultloc = locationsArray[y];
+                    var locid = resultloc.locId;
+                    if (locid == currentLocation) {
+                        myLocationSeats = resultloc.availableSeats;
+                    }
+                }
+                if (myLocationSeats < myNumberOfStudents) {
+                    maySchedule = false;
+                    message = "There are not enough seats for the students";
+                }
+
             }
         }
         else {
@@ -142,7 +194,7 @@ function schedule(group,location,exam, dateProgrammed)  {
         error: function (programmation, error) {
             // Execute any logic that should take place if the save fails.
             // error is a Parse.Error with an error code and message.
-            alert('Failed to create new object, with error code: ' + error.message);
+            alert('Failed to create new row ');
         }
     });
 }
