@@ -245,7 +245,7 @@
                     var cell3 = myrow.insertCell(2);
                     var cell4 = myrow.insertCell(3);
                     var cell5 = myrow.insertCell(4);
-                    
+
                     for (x in groupsArray) {
                         var result = groupsArray[x];
                         if (result.groupId == result2.idGroup) {
@@ -268,22 +268,19 @@
                     //ADDING DELETE BUTTON TO DELETE SCHEDULES
                     var btnDelete = document.createElement("button");
                     var icon = document.createElement("span");
-                    var hidden = document.createElement("input");
-                    hidden.setAttribute("type", "hidden");
-                    hidden.setAttribute("value", result2.id);
-                    hidden.setAttribute("id", k);
                     icon.setAttribute("class", "glyphicon glyphicon-trash");
                     icon.setAttribute("aria-hidden", "true");
+                    btnDelete.setAttribute("id", result2.id);
                     btnDelete.setAttribute("type", "button");
                     btnDelete.setAttribute("class", "btn btn-default btn_textcolor");
                     btnDelete.setAttribute("aria-label", "Justify");
                     btnDelete.appendChild(icon);
-                    btnDelete.onclick = function () { deleteProgrammation(document.getElementById(''+k+'').value) };
+                    //btnDelete.onclick = function () { deleteProgrammation(hidden.value) };
+                    btnDelete.addEventListener("click", function () {
+                        var objectId = this.id;
+                        deleteProgrammation(objectId);
+                    })
                     cell5.appendChild(btnDelete);
-                    hidden.value
-                    cell5.appendChild(hidden);
-                    //cell5.innerHTML = prog[i].id;
-                    //cell5.innerHTML = result2.id;
                 }
             }
         </script>
