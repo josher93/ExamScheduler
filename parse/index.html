@@ -216,7 +216,8 @@
                                 idLocation: prog[i].get("IdLocation"),
                                 idGroup: prog[i].get("IdGroup"),
                                 programmedDate: prog[i].get("Date"),
-                                id:prog[i].get("objectId")
+                                //id: prog[i].get("objectId")
+                                id: prog[i].id
                             });
                         }
                         fillTable(groupsArray, locationsArray, examsArray, programmationArray);
@@ -266,11 +267,16 @@
                     cell4.innerHTML = formatedDate(result2.programmedDate);
 
                     //ADDING DELETE BUTTON TO DELETE SCHEDULES
-                    var btnDelete = document.createElement("input");
+                    var btnDelete = document.createElement("button");
+                    var icon = document.createElement("span");
+                    icon.setAttribute("class", "glyphicon glyphicon-trash");
+                    icon.setAttribute("aria-hidden", "true");
                     var objectId = result2.id;
-                    btnDelete.setAttribute("value", "Delete");
                     btnDelete.setAttribute("type", "button");
-                    btnDelete.onclick = function () { runCommand(objectId) };
+                    btnDelete.setAttribute("class", "btn btn-default btn_textcolor");
+                    btnDelete.setAttribute("aria-label", "Justify");
+                    btnDelete.appendChild(icon);
+                    btnDelete.onclick = function () { deleteProgrammation(objectId) };
                     cell5.appendChild(btnDelete);
                     //cell5.innerHTML = prog[i].id;
                 }
