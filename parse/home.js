@@ -146,3 +146,41 @@ function schedule(group,location,exam, dateProgrammed)  {
         }
     });
 }
+
+function formatedDate(programmedDate) {
+
+    var monthInitial = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+
+    day = "" + programmedDate.getDate(); if (day.length == 1) { day = "0" + day; }
+    month = "" + monthInitial[(programmedDate.getMonth())]; //if (month.length == 1) { month = "0" + month; }
+    year = "" + programmedDate.getFullYear();
+
+    hour = "" + programmedDate.getHours(); if (hour.length == 1) { hour = "0" + hour; }
+    minute = "" + programmedDate.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
+    second = "" + programmedDate.getSeconds(); if (second.length == 1) { second = "0" + second; }
+
+    var formated = day + "-" + month + "-" + year + " || " + hour + ":" + minute + ":" + second;
+
+    return formated;
+}
+
+function deleteProgrammation(objectId) {
+
+    var programmation = Parse.Object.extend("Programmation");
+    var query = new Parse.Query(programmation);
+    query.get(objectId, {
+        success: function (scheduled) {
+            // The object was retrieved successfully.
+            scheduled.destroy({});
+            alert('Exam deleted succesfully');
+            location.reload();
+        },
+        error: function (object, error) {
+            // The object was not retrieved successfully.
+            // error is a Parse.Error with an error code and description.
+            alert('Sorry, the exam could not be deleted!');
+        }
+    });
+}
