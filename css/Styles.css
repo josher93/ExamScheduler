@@ -55,3 +55,7 @@ h1 {
 #account a:hover {
     text-decoration: underline;
 }
+
+.btn_textcolor {
+    color: #0070C0;
+}
