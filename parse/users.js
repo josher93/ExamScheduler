@@ -12,6 +12,7 @@ function loginUser(form) {
             // Do stuff after successful login.
             localStorage.setItem("parseUser", true);
             localStorage.setItem("guestUser", false);
+            localStorage.setItem("username", username);
             window.location.href = 'index.html';
         },
         error: function (user, error) {
