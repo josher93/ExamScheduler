@@ -13,6 +13,7 @@ function loginUser(form) {
             localStorage.setItem("parseUser", true);
             localStorage.setItem("guestUser", false);
             localStorage.setItem("username", username);
+            localStorage.setItem("userGroupId", Parse.User.IdGroup)
             window.location.href = 'index.html';
         },
         error: function (user, error) {

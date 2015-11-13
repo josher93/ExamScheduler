@@ -24,6 +24,20 @@
           webshims.setOptions('waitReady', false);
           webshims.setOptions('forms-ext', {types: 'date'});
           webshims.polyfill('forms forms-ext');
+          var myUserGroupId = 0;
+                
+                if (localStorage.getItem("username") != "" && localStorage.getItem("username") != undefined && localStorage.getItem("username") != "undefined") {
+                    var queryUsr = new Parse.Query(Parse.User);
+                    queryUsr.equalTo("username", localStorage.getItem("username"));  // find all the women
+                    queryUsr.find({
+                        success: function (myUserGroup) {
+                            // Do stuff
+                            for (n = 0; n < myUserGroup.length; n++) {
+                                myUserGroupId = myUserGroup[n].get("IdGroup");
+                            }
+                        }
+                    });
+                }
         </script>
     </head>
     <body>
@@ -247,9 +261,9 @@
                 });
             }
             function fillTable(groupsArray, locationsArray, examsArray, programmationArray) {
-
+/*
                 var myUserGroupId = 0;
-
+                
                 if (localStorage.getItem("username") != "" && localStorage.getItem("username") != undefined && localStorage.getItem("username") != "undefined") {
                     var queryUsr = new Parse.Query(Parse.User);
                     queryUsr.equalTo("username", localStorage.getItem("username"));  // find all the women
@@ -261,15 +275,15 @@
                             }
                         }
                     });
-                }
+                }*/
 
                 var mytable = document.getElementsByTagName("tbody")[0];
-                for (k = 0; programmationArray.length; k++) {
+                for (k = 0; k<programmationArray.length; k++) {
 
                     var result2 = programmationArray[k];
                     if (myUserGroupId == result2.idGroup || myUserGroupId == 0) {
                         var myrow = mytable.insertRow(k);
-                        var cell1 = myrow.insertCell(0);
+                        var cell1 = myrow.insertCell(0);    
                         var cell2 = myrow.insertCell(1);
                         var cell3 = myrow.insertCell(2);
                         var cell4 = myrow.insertCell(3);
