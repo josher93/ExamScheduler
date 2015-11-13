@@ -9,11 +9,20 @@ function loginUser(event, form) {
 
     Parse.User.logIn(username, pass, {
         success: function (user) {
+            //var idGroup = user.get("IdGroup");
             // Do stuff after successful login.
             localStorage.setItem("parseUser", true);
             localStorage.setItem("guestUser", false);
             localStorage.setItem("username", username);
-            localStorage.setItem("userGroupId", Parse.User.IdGroup)
+            //localStorage.setItem("userGroupId", idGroup);
+
+            user.fetch().then(function (fetchedUser) {
+
+
+                var IdGroup2 = user.get("IdGroup");
+            });
+
+
             window.location.href = 'index.html';
         },
         error: function (user, error) {
@@ -44,8 +53,7 @@ function LoggedIn() {
         localStorage.setItem("guestUser", false);
     }
 
-    if (user == null && guest == null)
-    {
+    if (user == null && guest == null) {
         validUser = false;
         window.location.href = 'login.html';
     }
@@ -74,7 +82,7 @@ function userAndGuestInterface() {
     var guest = localStorage.getItem("guestUser");
     var user = localStorage.getItem("parseUser");
     var username = localStorage.getItem("username");
-    
+
     if (username != "admin") {
 
         var title = document.getElementById('insertTitle');
@@ -120,4 +128,39 @@ function isAdmin() {
     }
 
     return isadmin;
+}
+
+/*function gettingUserGroup() {
+    
+var user = Parse.User.current();
+
+var query = new Parse.Query(user);
+query.get(user.id, {
+success: function (user) {
+// The object was retrieved successfully.
+var groupID = user.get("IdGroup");
+},
+error: function (object, error) {
+// The object was not retrieved successfully.
+// error is a Parse.Error with an error code and message.
+}
+});
+}
+*/
+
+function getUserGroup() {
+
+    var userName = localStorage.getItem("username");
+    var query = new Parse.Query(Parse.User);
+    query.equalTo("username", userName); // Whatever be the username passed by search string
+    query.find({
+        success: function (user) {
+            console.log("Success:", user.attributes[1].IdGroup)
+
+            //var userinfo = user.attributes;
+        },
+        error: function (error) {
+            //Show if no user was found to match
+        }
+    });
 }
