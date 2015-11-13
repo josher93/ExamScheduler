@@ -12,6 +12,7 @@ function loginUser(form) {
             // Do stuff after successful login.
             localStorage.setItem("parseUser", true);
             localStorage.setItem("guestUser", false);
+            localStorage.setItem("username", username);
             window.location.href = 'index.html';
         },
         error: function (user, error) {
@@ -66,3 +67,43 @@ function loginAsGuest() {
     }
 }
 
+function guestInterface() {
+
+    var currentUser = Parse.User.current();
+    var guest = localStorage.getItem("guestUser");
+    var user = localStorage.getItem("parseUser");
+    
+    if (user == "false" && guest == "true") {
+
+        var title = document.getElementById('insertTitle');
+        var controls = document.getElementById('insertControls');
+        var ddlGroup = document.getElementById('ddlGroup');
+        var ddlLocation = document.getElementById('ddlLocation');
+        var ddlSubject = document.getElementById('ddlSubject');
+        var txtDate = document.getElementById('txtDate');
+        var txtTime = document.getElementById('txtTime');
+        var btnAdd = document.getElementById('btnAdd');
+
+        title.style.display = 'none';
+        controls.style.display = 'none';
+        ddlGroup.disabled = true;
+        ddlLocation.disabled = true;
+        ddlSubject.disabled = true;
+        txtDate.disabled = true;
+        txtTime.disabled = true;
+        btnAdd.disabled = true;
+    }
+}
+
+function isGuest() {
+
+    var isguest = false;
+    var guest = localStorage.getItem("guestUser");
+    var user = localStorage.getItem("parseUser");
+
+    if (user == "false" && guest == "true") {
+        isguest = true;
+    }
+
+    return isguest;
+}
