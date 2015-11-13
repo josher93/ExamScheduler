@@ -1,6 +1,6 @@
 // JavaScript Document
 
-function loginUser(form) {
+function loginUser(event, form) {
 
     event.preventDefault();
 
@@ -27,8 +27,8 @@ function loginUser(form) {
 function logout() {
 
     Parse.User.logOut();
-    localStorage.setItem("guestUser", false);
-    localStorage.setItem("parseUser", false);
+    localStorage.removeItem("guestUser");
+    localStorage.removeItem("parseUser");
     window.location.href = 'login.html';
 }
 
@@ -44,8 +44,8 @@ function LoggedIn() {
         localStorage.setItem("guestUser", false);
     }
 
-    if (user == "false" && guest == "false") {
-
+    if (user == null && guest == null)
+    {
         validUser = false;
         window.location.href = 'login.html';
     }
@@ -58,7 +58,7 @@ function loginAsGuest() {
     if (typeof (Storage) !== "undefined") {
         // Store
         localStorage.setItem("guestUser", true);
-        localStorage.setItem("parseUser", false);
+        localStorage.removeItem("parseUser");
         window.location.href = 'index.html';
         // Retrieve
         //document.getElementById("result").innerHTML = localStorage.getItem("lastname");
@@ -68,13 +68,14 @@ function loginAsGuest() {
     }
 }
 
-function guestInterface() {
+function userAndGuestInterface() {
 
     var currentUser = Parse.User.current();
     var guest = localStorage.getItem("guestUser");
     var user = localStorage.getItem("parseUser");
+    var username = localStorage.getItem("username");
     
-    if (user == "false" && guest == "true") {
+    if (username != "admin") {
 
         var title = document.getElementById('insertTitle');
         var controls = document.getElementById('insertControls');
@@ -102,9 +103,21 @@ function isGuest() {
     var guest = localStorage.getItem("guestUser");
     var user = localStorage.getItem("parseUser");
 
-    if (user == "false" && guest == "true") {
+    if (user == null && guest == "true") {
         isguest = true;
     }
 
     return isguest;
+}
+
+function isAdmin() {
+
+    var isadmin = false;
+    var username = localStorage.getItem("username");
+
+    if (username == "admin") {
+        isadmin = true;
+    }
+
+    return isadmin;
 }
