@@ -145,8 +145,7 @@ function getUserGroup() {
             }
         });
     }
-    else
-    {
-         finishit();
+    else {
+        finishit();
     }
 }
