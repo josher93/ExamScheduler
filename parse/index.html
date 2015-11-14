@@ -24,6 +24,8 @@
           webshims.setOptions('waitReady', false);
           webshims.setOptions('forms-ext', {types: 'date'});
           webshims.polyfill('forms forms-ext');
+
+
         </script>
     </head>
     <body>
@@ -264,6 +266,17 @@
                 }
                 });
                 }*/
+            var currentUser = Parse.User.current();
+            currentUser.fetch({
+              success: function(currentUser) {
+                var comParent = currentUser.get("IdGroup");
+                var myUserName = currentUser.get("username");
+                 //alert(comParent); // this one should be right
+                 alert(comParent);
+            alert(myUserName);
+              }
+            });
+            
 
                 var mytable = document.getElementsByTagName("tbody")[0];
                 for (k = 0; k < programmationArray.length; k++) {
@@ -318,6 +331,7 @@
                         cell5.appendChild(btnDelete);
                     }
                 }
+
                 //}
                 if (localStorage.getItem("guestUser") == "true") {
                     document.getElementById("lblUser").textContent = "Guest  || ";
