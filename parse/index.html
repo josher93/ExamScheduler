@@ -239,6 +239,7 @@
                     for (i in results) {
                         /* Set obj to current post*/
                         var obj = results[i];
+                        var objectId = obj.id;
                         var idGrupo = obj.get("IdGroup").id;
                         var DescriptionGrupo = obj.get("IdGroup").get("Description");
                         var DescriptionLocation = obj.get("IdLocation").get("Description");
@@ -246,7 +247,8 @@
                         var myDate = obj.get("Date")
                         /* Let's Put the Post Information in an Array as an Object*/
                         postsArray.push({
-            
+                            
+                            myObjectId: objectId,
                             myGroups: DescriptionGrupo,
                             myLocations: DescriptionLocation,
                             myExams: DescriptionExam,
@@ -256,6 +258,7 @@
                         });
                         localStorage["progs"] = JSON.stringify(postsArray);
                         myProgArray.push({
+                            idObject: obj.id,
                             idGroup: obj.get("IdGroup").id,
                             idLocation: obj.get("IdLocation").id,
                             programmedDate: myDate,
@@ -306,7 +309,7 @@
                         var icon = document.createElement("span");
                         icon.setAttribute("class", "glyphicon glyphicon-trash");
                         icon.setAttribute("aria-hidden", "true");
-                        btnDelete.setAttribute("id", result2.id);
+                        btnDelete.setAttribute("id", result2.myObjectId);
                         btnDelete.setAttribute("type", "button");
                         btnDelete.setAttribute("class", "btn btn-default btn_textcolor");
                         btnDelete.setAttribute("aria-label", "Justify");
