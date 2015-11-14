@@ -214,7 +214,9 @@ function schedule(group,location,exam, dateProgrammed)  {
     programmation.save(null, {
         success: function (programmation) {
             // Execute any logic that should take place after the object is saved.
+            //location.reload();
             alert('New row created!!!');
+            window.location.replace = 'index.html';
         },
         error: function (programmation, error) {
             // Execute any logic that should take place if the save fails.
@@ -252,7 +254,7 @@ function deleteProgrammation(objectId) {
             // The object was retrieved successfully.
             scheduled.destroy({});
             alert('Exam deleted succesfully');
-            location.reload();
+            window.location.href = 'index.html';
         },
         error: function (object, error) {
             // The object was not retrieved successfully.
