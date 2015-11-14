@@ -21,11 +21,11 @@
         <!-- polyfiller file to detect and load polyfills -->
         <script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
         <script>
-          webshims.setOptions('waitReady', false);
-          webshims.setOptions('forms-ext', {types: 'date'});
-          webshims.polyfill('forms forms-ext');
-
-
+            webshims.setOptions('waitReady', false);
+            webshims.setOptions('forms-ext', {types: 'date'});
+            webshims.polyfill('forms forms-ext');
+            
+            
         </script>
     </head>
     <body>
@@ -145,30 +145,17 @@
         <script type="text/javascript">
             Parse.initialize("I8j2v2nLAPbNXeHzbf2VJB2GZa0FtIZvLwjhQU9b", "bNhGiXDfV4y1pMFBF4AM5SJ0d8EgJv1RcXcxiN7A");
             if (LoggedIn()) {
-                var currentUser = Parse.User.current();
-                currentUser.fetch({
-                    success: function (currentUser) {
-                        localStorage.setItem("myUser", currentUser.get("username"));
-                        try {
-                            localStorage.setItem("myGroup", currentUser.get("IdGroup").id);
-                        }
-                        catch (err)
-                        { }
-                        finishit();
-                    }
-                });
+            
                 userAndGuestInterface();
-                //gettingUserGroup();
                 getUserGroup();
-
-
+            
                 var Groups = Parse.Object.extend("Groups");
                 var query = new Parse.Query(Groups);
                 var groupsArray = new Array();
                 var locationsArray = new Array();
                 var examsArray = new Array();
                 var myProgArray = new Array();
-
+            
                 //FILLING THE GROUP DROP DOWN LIST
                 var GroupDesc = Parse.Object.extend("Groups");
                 var query = new Parse.Query(GroupDesc);
@@ -233,13 +220,13 @@
                         alert("Error loading data for Subjects/Exams")
                     }
                 });
-
+            
                 fillTable();
-
+            
             }
             function fillTable() {
-
-
+            
+            
                 var Posts = Parse.Object.extend("Programmation");
                 var querys = new Parse.Query(Posts);
                 querys.include("IdGroup");
@@ -248,7 +235,7 @@
                 var postsArray = new Array();
                 querys.find().then(function (results) {
                     /* Go Through Each Post */
-
+            
                     for (i in results) {
                         /* Set obj to current post*/
                         var obj = results[i];
@@ -259,42 +246,46 @@
                         var myDate = obj.get("Date")
                         /* Let's Put the Post Information in an Array as an Object*/
                         postsArray.push({
-
+            
                             myGroups: DescriptionGrupo,
                             myLocations: DescriptionLocation,
                             myExams: DescriptionExam,
                             myDates: myDate,
                             myIdGroup: idGrupo
-
+            
                         });
                         localStorage["progs"] = JSON.stringify(postsArray);
                         myProgArray.push({
-                            idGroup:obj.get("IdGroup").id,
-                            idLocation:obj.get("IdLocation").id,
+                            idGroup: obj.get("IdGroup").id,
+                            idLocation: obj.get("IdLocation").id,
                             programmedDate: myDate,
-                            idExam:obj.get("IdExam").id
+                            idExam: obj.get("IdExam").id
                         });
                     }
                 });
-
+            
                 //finishit();
-                
-
+            
+            
             }
             function finishit() {
                 var myuSER = "";
                 var programmationArray = new Array();
+                var guest = localStorage.getItem("guestUser");
                 programmationArray = JSON.parse(localStorage["progs"]);
                 localStorage.removeItem("progs");
                 var mytable = document.getElementsByTagName("tbody")[0];
                 var myNum = 0;
                 try { myuSER = localStorage.myUser.toUpperCase() } catch (er) { }
                 for (k = 0; k < programmationArray.length; k++) {
-
+            
                     var result2 = programmationArray[k];
-                    if (myuSER != "ADMIN" && localStorage.myGroup != result2.myIdGroup) {
-                        continue;
+                    if (guest != "true") {
+                        if (myuSER != "ADMIN" && localStorage.myGroup != result2.myIdGroup) {
+                            continue;
+                        }
                     }
+            
                     //if (myUserGroupId == result2.idGroup || myUserGroupId == 0) {
                     var myrow = mytable.insertRow(myNum);
                     myNum++;
@@ -303,7 +294,7 @@
                     var cell3 = myrow.insertCell(2);
                     var cell4 = myrow.insertCell(3);
                     var cell5 = myrow.insertCell(4);
-
+            
                     cell1.innerHTML = result2.myGroups;
                     cell2.innerHTML = result2.myLocations;
                     cell3.innerHTML = result2.myExams;
@@ -334,7 +325,7 @@
                     "info": false,
                     "pageLength": 10
                 });
-
+            
                 //}
                 if (localStorage.getItem("guestUser") == "true") {
                     document.getElementById("lblUser").textContent = "Guest  || ";
@@ -343,8 +334,7 @@
                     document.getElementById("lblUser").textContent = localStorage.getItem("username") + "  ||";
                 }
             }
-
-
+            
         </script>
     </body>
 </html>
