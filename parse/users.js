@@ -1,6 +1,6 @@
 // JavaScript Document
 
-function loginUser(form) {
+function loginUser(event, form) {
 
     event.preventDefault();
 
@@ -9,10 +9,20 @@ function loginUser(form) {
 
     Parse.User.logIn(username, pass, {
         success: function (user) {
+            //var idGroup = user.get("IdGroup");
             // Do stuff after successful login.
             localStorage.setItem("parseUser", true);
             localStorage.setItem("guestUser", false);
             localStorage.setItem("username", username);
+            //localStorage.setItem("userGroupId", idGroup);
+
+            user.fetch().then(function (fetchedUser) {
+
+
+                var IdGroup2 = user.get("IdGroup");
+            });
+
+
             window.location.href = 'index.html';
         },
         error: function (user, error) {
@@ -26,8 +36,8 @@ function loginUser(form) {
 function logout() {
 
     Parse.User.logOut();
-    localStorage.setItem("guestUser", false);
-    localStorage.setItem("parseUser", false);
+    localStorage.removeItem("guestUser");
+    localStorage.removeItem("parseUser");
     window.location.href = 'login.html';
 }
 
@@ -43,8 +53,7 @@ function LoggedIn() {
         localStorage.setItem("guestUser", false);
     }
 
-    if (user == "false" && guest == "false") {
-
+    if (user == null && guest == null) {
         validUser = false;
         window.location.href = 'login.html';
     }
@@ -57,7 +66,7 @@ function loginAsGuest() {
     if (typeof (Storage) !== "undefined") {
         // Store
         localStorage.setItem("guestUser", true);
-        localStorage.setItem("parseUser", false);
+        localStorage.removeItem("parseUser");
         window.location.href = 'index.html';
         // Retrieve
         //document.getElementById("result").innerHTML = localStorage.getItem("lastname");
@@ -67,13 +76,14 @@ function loginAsGuest() {
     }
 }
 
-function guestInterface() {
+function userAndGuestInterface() {
 
     var currentUser = Parse.User.current();
     var guest = localStorage.getItem("guestUser");
     var user = localStorage.getItem("parseUser");
-    
-    if (user == "false" && guest == "true") {
+    var username = localStorage.getItem("username");
+
+    if (username != "admin") {
 
         var title = document.getElementById('insertTitle');
         var controls = document.getElementById('insertControls');
@@ -101,9 +111,56 @@ function isGuest() {
     var guest = localStorage.getItem("guestUser");
     var user = localStorage.getItem("parseUser");
 
-    if (user == "false" && guest == "true") {
+    if (user == null && guest == "true") {
         isguest = true;
     }
 
     return isguest;
+}
+
+function isAdmin() {
+
+    var isadmin = false;
+    var username = localStorage.getItem("username");
+
+    if (username == "admin") {
+        isadmin = true;
+    }
+
+    return isadmin;
+}
+
+/*function gettingUserGroup() {
+    
+var user = Parse.User.current();
+
+var query = new Parse.Query(user);
+query.get(user.id, {
+success: function (user) {
+// The object was retrieved successfully.
+var groupID = user.get("IdGroup");
+},
+error: function (object, error) {
+// The object was not retrieved successfully.
+// error is a Parse.Error with an error code and message.
+}
+});
+}
+*/
+
+function getUserGroup() {
+
+    var userName = localStorage.getItem("username");
+    var query = new Parse.Query(Parse.User);
+    query.equalTo("username", userName); // Whatever be the username passed by search string
+    query.find({
+        success: function (user) {
+            console.log("Success:", user.attributes[1].IdGroup)
+
+            //var userinfo = user.attributes;
+        },
+        error: function (error) {
+            //Show if no user was found to match
+        }
+    });
 }

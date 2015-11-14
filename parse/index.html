@@ -24,6 +24,20 @@
           webshims.setOptions('waitReady', false);
           webshims.setOptions('forms-ext', {types: 'date'});
           webshims.polyfill('forms forms-ext');
+          var myUserGroupId = 0;
+                
+                if (localStorage.getItem("username") != "" && localStorage.getItem("username") != undefined && localStorage.getItem("username") != "undefined") {
+                    var queryUsr = new Parse.Query(Parse.User);
+                    queryUsr.equalTo("username", localStorage.getItem("username"));  // find all the women
+                    queryUsr.find({
+                        success: function (myUserGroup) {
+                            // Do stuff
+                            for (n = 0; n < myUserGroup.length; n++) {
+                                myUserGroupId = myUserGroup[n].get("IdGroup");
+                            }
+                        }
+                    });
+                }
         </script>
     </head>
     <body>
@@ -33,8 +47,8 @@
                     <h1>Exam Scheduler</h1>
                 </a>
                 <div id="account" class="navbar-right">
-                    <label id="lblUser" style="color: white; font-weight:700; text-transform: uppercase "></label>
-                    <a href="#" onclick="logout()">&nbsp Log Out</a>
+                    <label id="lblUser" style="color: white; font-size: 16px; font-weight:700; text-transform: capitalize "></label>
+                    <a href="#" onclick="logout()">Log Out</a>
                 </div>
             </div>
         </header>
@@ -144,7 +158,9 @@
             Parse.initialize("I8j2v2nLAPbNXeHzbf2VJB2GZa0FtIZvLwjhQU9b", "bNhGiXDfV4y1pMFBF4AM5SJ0d8EgJv1RcXcxiN7A");
             if (LoggedIn()) {
 
-                guestInterface();
+                userAndGuestInterface();
+                //gettingUserGroup();
+                getUserGroup();
 
 
                 var Groups = Parse.Object.extend("Groups");
@@ -247,24 +263,24 @@
                 });
             }
             function fillTable(groupsArray, locationsArray, examsArray, programmationArray) {
-
+                /*
                 var myUserGroupId = 0;
 
                 if (localStorage.getItem("username") != "" && localStorage.getItem("username") != undefined && localStorage.getItem("username") != "undefined") {
-                    var queryUsr = new Parse.Query(Parse.User);
-                    queryUsr.equalTo("username", localStorage.getItem("username"));  // find all the women
-                    queryUsr.find({
-                        success: function (myUserGroup) {
-                            // Do stuff
-                            for (n = 0; n < myUserGroup.length; n++) {
-                                myUserGroupId = myUserGroup[n].get("IdGroup");
-                            }
-                        }
-                    });
+                var queryUsr = new Parse.Query(Parse.User);
+                queryUsr.equalTo("username", localStorage.getItem("username"));  // find all the women
+                queryUsr.find({
+                success: function (myUserGroup) {
+                // Do stuff
+                for (n = 0; n < myUserGroup.length; n++) {
+                myUserGroupId = myUserGroup[n].get("IdGroup");
                 }
+                }
+                });
+                }*/
 
                 var mytable = document.getElementsByTagName("tbody")[0];
-                for (k = 0; programmationArray.length; k++) {
+                for (k = 0; k < programmationArray.length; k++) {
 
                     var result2 = programmationArray[k];
                     if (myUserGroupId == result2.idGroup || myUserGroupId == 0) {
@@ -298,7 +314,7 @@
                         }
                         cell4.innerHTML = formatedDate(result2.programmedDate);
                         //CHECK USER IS GUEST
-                        if (!isGuest()) {
+                        if (isAdmin()) {
                             //ADDING DELETE BUTTON TO DELETE SCHEDULES
                             var btnDelete = document.createElement("button");
                             var icon = document.createElement("span");
