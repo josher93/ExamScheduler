@@ -24,20 +24,6 @@
           webshims.setOptions('waitReady', false);
           webshims.setOptions('forms-ext', {types: 'date'});
           webshims.polyfill('forms forms-ext');
-          var myUserGroupId = 0;
-                
-                if (localStorage.getItem("username") != "" && localStorage.getItem("username") != undefined && localStorage.getItem("username") != "undefined") {
-                    var queryUsr = new Parse.Query(Parse.User);
-                    queryUsr.equalTo("username", localStorage.getItem("username"));  // find all the women
-                    queryUsr.find({
-                        success: function (myUserGroup) {
-                            // Do stuff
-                            for (n = 0; n < myUserGroup.length; n++) {
-                                myUserGroupId = myUserGroup[n].get("IdGroup");
-                            }
-                        }
-                    });
-                }
         </script>
     </head>
     <body>
@@ -283,56 +269,56 @@
                 for (k = 0; k < programmationArray.length; k++) {
 
                     var result2 = programmationArray[k];
-                    if (myUserGroupId == result2.idGroup || myUserGroupId == 0) {
-                        var myrow = mytable.insertRow(k);
-                        var cell1 = myrow.insertCell(0);
-                        var cell2 = myrow.insertCell(1);
-                        var cell3 = myrow.insertCell(2);
-                        var cell4 = myrow.insertCell(3);
-                        var cell5 = myrow.insertCell(4);
+                    //if (myUserGroupId == result2.idGroup || myUserGroupId == 0) {
+                    var myrow = mytable.insertRow(k);
+                    var cell1 = myrow.insertCell(0);
+                    var cell2 = myrow.insertCell(1);
+                    var cell3 = myrow.insertCell(2);
+                    var cell4 = myrow.insertCell(3);
+                    var cell5 = myrow.insertCell(4);
 
-                        for (x in groupsArray) {
-                            var result = groupsArray[x];
-                            if (result.groupId == result2.idGroup) {
-                                cell1.innerHTML = result.groupDescription;
-                                break;
-                            }
-                        }
-                        for (y in locationsArray) {
-                            var resultloc = locationsArray[y];
-                            if (resultloc.locId == result2.idLocation) {
-                                cell2.innerHTML = resultloc.locDescription;
-                                break;
-                            }
-                        }
-                        for (z in examsArray) {
-                            var resultExam = examsArray[z];
-                            if (resultExam.examId == result2.idExam) {
-                                cell3.innerHTML = resultExam.examDescription;
-                                break;
-                            }
-                        }
-                        cell4.innerHTML = formatedDate(result2.programmedDate);
-                        //CHECK USER IS GUEST
-                        if (isAdmin()) {
-                            //ADDING DELETE BUTTON TO DELETE SCHEDULES
-                            var btnDelete = document.createElement("button");
-                            var icon = document.createElement("span");
-                            icon.setAttribute("class", "glyphicon glyphicon-trash");
-                            icon.setAttribute("aria-hidden", "true");
-                            btnDelete.setAttribute("id", result2.id);
-                            btnDelete.setAttribute("type", "button");
-                            btnDelete.setAttribute("class", "btn btn-default btn_textcolor");
-                            btnDelete.setAttribute("aria-label", "Justify");
-                            btnDelete.appendChild(icon);
-                            btnDelete.addEventListener("click", function () {
-                                var objectId = this.id;
-                                deleteProgrammation(objectId);
-                            })
-                            cell5.appendChild(btnDelete);
+                    for (x in groupsArray) {
+                        var result = groupsArray[x];
+                        if (result.groupId == result2.idGroup) {
+                            cell1.innerHTML = result.groupDescription;
+                            break;
                         }
                     }
+                    for (y in locationsArray) {
+                        var resultloc = locationsArray[y];
+                        if (resultloc.locId == result2.idLocation) {
+                            cell2.innerHTML = resultloc.locDescription;
+                            break;
+                        }
+                    }
+                    for (z in examsArray) {
+                        var resultExam = examsArray[z];
+                        if (resultExam.examId == result2.idExam) {
+                            cell3.innerHTML = resultExam.examDescription;
+                            break;
+                        }
+                    }
+                    cell4.innerHTML = formatedDate(result2.programmedDate);
+                    //CHECK USER IS GUEST
+                    if (isAdmin()) {
+                        //ADDING DELETE BUTTON TO DELETE SCHEDULES
+                        var btnDelete = document.createElement("button");
+                        var icon = document.createElement("span");
+                        icon.setAttribute("class", "glyphicon glyphicon-trash");
+                        icon.setAttribute("aria-hidden", "true");
+                        btnDelete.setAttribute("id", result2.id);
+                        btnDelete.setAttribute("type", "button");
+                        btnDelete.setAttribute("class", "btn btn-default btn_textcolor");
+                        btnDelete.setAttribute("aria-label", "Justify");
+                        btnDelete.appendChild(icon);
+                        btnDelete.addEventListener("click", function () {
+                            var objectId = this.id;
+                            deleteProgrammation(objectId);
+                        })
+                        cell5.appendChild(btnDelete);
+                    }
                 }
+                //}
                 if (localStorage.getItem("guestUser") == "true") {
                     document.getElementById("lblUser").textContent = "Guest  || ";
                 }
