@@ -9,7 +9,7 @@ function save() {
     var ddlDate = document.getElementById("txtDate").value;
     var ddlTime = document.getElementById("txtTime").value;
     var maySchedule = true;
-    var myNewArrayProg = programmationArray;
+    var myNewArrayProg = myProgArray;
     var message = "";
 
     //checking if the variables are empty
@@ -19,10 +19,10 @@ function save() {
         //checking if the selected date is greater than today
         if (myDate > today) {
             //checking the array
-            if (programmationArray.length > 0) {
+            if (myProgArray.length > 0) {
 
-                for (a in programmationArray) {
-                    var myResult = programmationArray[a]; //current file
+                for (a in myProgArray) {
+                    var myResult = myProgArray[a]; //current file
                     var currentGroup = myResult.idGroup;
                     var currentLocation = myResult.idLocation;
                     var myProgrammedDate = new Date(myResult.programmedDate); //date
@@ -43,11 +43,11 @@ function save() {
                         var myNumberOfStudents = 0; ;
 
                         //GETTING NUMBER OF STUDENS OF THE GROUP
-                        if (myResult.idLocation == ddlLocation) {
+
                             for (x in groupsArray) {
                                 var result = groupsArray[x];
                                 var grupoid = result.groupId;
-                                if (grupoid == currentGroup && currentGroup == ddlGroup) {
+                                if (grupoid  == ddlGroup) {
                                     myNumberOfStudents = result.numberOfStudents;
                                     break;
                                 }
@@ -56,15 +56,15 @@ function save() {
                             for (y in locationsArray) {
                                 var resultloc = locationsArray[y];
                                 var locid = resultloc.locId;
-                                if (locid == currentLocation) {
+                                if (locid == ddlLocation) {
                                     myLocationSeats = resultloc.availableSeats;
                                     break;
                                 }
                             }
-                        }
                         if (myLocationSeats < myNumberOfStudents && myNumberOfStudents != 0 && myLocationSeats != 0) {
                             maySchedule = false;
                             message = "There are not enough seats available";
+                            break;
                         }
                         else {
                             if (myResult.idLocation == ddlLocation) {
@@ -80,7 +80,7 @@ function save() {
                                     for (x in groupsArray) {
                                         var result = groupsArray[x];
                                         var grupoid = result.groupId;
-                                        if (grupoid == currentGroup) {
+                                        if (grupoid == ddlGroup) {
                                             myNumberOfStudents = result.numberOfStudents;
                                             break;
                                         }
@@ -140,7 +140,7 @@ function save() {
                 }
             }
             else {
-                //THERE IS NO LIST!!! LETS SCHEDULE THE EXAM
+                //THERE IS NO LIST!!! BUT ARE THERE ENOUGH SEATS
                 //maySchedule = true;  
                 var myLocationSeats = 0;
                 var myNumberOfStudents = 0; ;
@@ -188,14 +188,30 @@ function save() {
 }
 
 function schedule(group,location,exam, dateProgrammed)  {
+    var gro = Parse.Object.extend("Groups");
+    var loca = Parse.Object.extend("Locations");
+    var exa = Parse.Object.extend("Exams");
+
+    var Gro = new gro();
+    var Loca = new loca();
+    var Exa = new exa();
+
+    Gro.id = group;
+    Loca.id = location;
+    Exa.id = exam;
+
     var Programmation = Parse.Object.extend("Programmation");
     var programmation = new Programmation();
-    programmation.save({
-        IdGroup: parseInt(group),
-        IdLocation: parseInt(location),
-        IdExam: parseInt(exam),
-        Date: dateProgrammed
-        }, {
+
+    programmation.set("IdGroup", Gro);
+    programmation.set("IdLocation", Loca);
+    programmation.set("IdExam", Exa);
+
+    /*programmation.set("IdGroup",group);
+    programmation.set("IdLocation",location);
+    programmation.set("IdExam",exam);*/
+    programmation.set("Date",dateProgrammed);
+    programmation.save(null, {
         success: function (programmation) {
             // Execute any logic that should take place after the object is saved.
             alert('New row created!!!');

@@ -167,6 +167,7 @@
                 var groupsArray = new Array();
                 var locationsArray = new Array();
                 var examsArray = new Array();
+                var myProgArray = new Array();
 
                 //FILLING THE GROUP DROP DOWN LIST
                 var GroupDesc = Parse.Object.extend("Groups");
@@ -179,7 +180,11 @@
                                 ddl.options[i] = new Option("Select...", "")
                             }
                             ddl.options[i + 1] = new Option(groupDesc[i].get("Description"), groupDesc[i].id);
-
+                            groupsArray.push({
+                                groupDescription: groupDesc[i].get("Description"),
+                                groupId: groupDesc[i].id,
+                                numberOfStudents: groupDesc[i].get("Students")
+                            });
                         }
                     },
                     error: function (object, error) {
@@ -197,7 +202,11 @@
                                 ddlLoc.options[i] = new Option("Select...", "")
                             }
                             ddlLoc.options[i + 1] = new Option(locationsDesc[i].get("Description"), locationsDesc[i].id);
-
+                            locationsArray.push({
+                                locDescription: locationsDesc[i].get("Description"),
+                                locId: locationsDesc[i].id,
+                                availableSeats: locationsDesc[i].get("Seats")
+                            });
                         }
                     },
                     error: function (object, error) {
@@ -214,7 +223,10 @@
                             if (i == 0)
                             { ddlExam.options[i] = new Option("Select...", "") }
                             ddlExam.options[i + 1] = new Option(examDesc[i].get("Description"), examDesc[i].id);
-
+                            examsArray.push({
+                                examDescription: examDesc[i].get("Description"),
+                                examId: examDesc[i].id
+                            });
                         }
                     },
                     error: function (object, error) {
@@ -256,6 +268,12 @@
 
                         });
                         localStorage["progs"] = JSON.stringify(postsArray);
+                        myProgArray.push({
+                            idGroup:obj.get("IdGroup").id,
+                            idLocation:obj.get("IdLocation").id,
+                            programmedDate: myDate,
+                            idExam:obj.get("IdExam").id
+                        });
                     }
                 });
 
