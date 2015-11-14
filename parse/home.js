@@ -199,7 +199,7 @@ function schedule(group,location,exam, dateProgrammed)  {
     Gro.id = group;
     Loca.id = location;
     Exa.id = exam;
-
+    myDate = new Date(dateProgrammed);
     var Programmation = Parse.Object.extend("Programmation");
     var programmation = new Programmation();
 
@@ -210,7 +210,7 @@ function schedule(group,location,exam, dateProgrammed)  {
     /*programmation.set("IdGroup",group);
     programmation.set("IdLocation",location);
     programmation.set("IdExam",exam);*/
-    programmation.set("Date",dateProgrammed);
+    programmation.set("Date",myDate);
     programmation.save(null, {
         success: function (programmation) {
             // Execute any logic that should take place after the object is saved.
