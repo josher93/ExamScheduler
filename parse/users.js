@@ -125,37 +125,28 @@ function isAdmin() {
     return isadmin;
 }
 
-/*function gettingUserGroup() {
-    
-var user = Parse.User.current();
-
-var query = new Parse.Query(user);
-query.get(user.id, {
-success: function (user) {
-// The object was retrieved successfully.
-var groupID = user.get("IdGroup");
-},
-error: function (object, error) {
-// The object was not retrieved successfully.
-// error is a Parse.Error with an error code and message.
-}
-});
-}
-*/
 
 function getUserGroup() {
 
-    /*var userName = localStorage.getItem("username");
-    var query = new Parse.Query(Parse.User);
-    query.equalTo("username", userName); // Whatever be the username passed by search string
-    query.find({
-        success: function (user) {
-            console.log("Success:", user.attributes[1].IdGroup)
+    var guest = localStorage.getItem("guestUser");
+    var parseUser = localStorage.getItem("parseUser");
 
-            //var userinfo = user.attributes;
-        },
-        error: function (error) {
-            //Show if no user was found to match
-        }
-    });*/
+    if (parseUser == "true" && guest == "false") {
+        var currentUser = Parse.User.current();
+        currentUser.fetch({
+            success: function (currentUser) {
+                localStorage.setItem("myUser", currentUser.get("username"));
+                try {
+                    localStorage.setItem("myGroup", currentUser.get("IdGroup").id);
+                }
+                catch (err)
+                        { }
+                finishit();
+            }
+        });
+    }
+    else
+    {
+         finishit();
+    }
 }
