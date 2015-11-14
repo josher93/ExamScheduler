@@ -11,18 +11,11 @@ function loginUser(event, form) {
         success: function (user) {
             //var idGroup = user.get("IdGroup");
             // Do stuff after successful login.
+
             localStorage.setItem("parseUser", true);
             localStorage.setItem("guestUser", false);
             localStorage.setItem("username", username);
             //localStorage.setItem("userGroupId", idGroup);
-
-            user.fetch().then(function (fetchedUser) {
-
-
-                var IdGroup2 = user.get("IdGroup");
-            });
-
-
             window.location.href = 'index.html';
         },
         error: function (user, error) {
@@ -30,7 +23,6 @@ function loginUser(event, form) {
             alert('Invalid username or password!');
         }
     });
-
 }
 
 function logout() {
@@ -38,6 +30,9 @@ function logout() {
     Parse.User.logOut();
     localStorage.removeItem("guestUser");
     localStorage.removeItem("parseUser");
+    localStorage.removeItem("myGroup");
+    localStorage.removeItem("myUser");
+    localStorage.removeItem("username");
     window.location.href = 'login.html';
 }
 
@@ -150,7 +145,7 @@ error: function (object, error) {
 
 function getUserGroup() {
 
-    var userName = localStorage.getItem("username");
+    /*var userName = localStorage.getItem("username");
     var query = new Parse.Query(Parse.User);
     query.equalTo("username", userName); // Whatever be the username passed by search string
     query.find({
@@ -162,5 +157,5 @@ function getUserGroup() {
         error: function (error) {
             //Show if no user was found to match
         }
-    });
+    });*/
 }

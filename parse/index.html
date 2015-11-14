@@ -145,7 +145,18 @@
         <script type="text/javascript">
             Parse.initialize("I8j2v2nLAPbNXeHzbf2VJB2GZa0FtIZvLwjhQU9b", "bNhGiXDfV4y1pMFBF4AM5SJ0d8EgJv1RcXcxiN7A");
             if (LoggedIn()) {
-
+                var currentUser = Parse.User.current();
+                currentUser.fetch({
+                    success: function (currentUser) {
+                        localStorage.setItem("myUser", currentUser.get("username"));
+                        try {
+                            localStorage.setItem("myGroup", currentUser.get("IdGroup").id);
+                        }
+                        catch (err)
+                        { }
+                        finishit();
+                    }
+                });
                 userAndGuestInterface();
                 //gettingUserGroup();
                 getUserGroup();
@@ -156,7 +167,7 @@
                 var groupsArray = new Array();
                 var locationsArray = new Array();
                 var examsArray = new Array();
-                var programmationArray = new Array();
+
                 //FILLING THE GROUP DROP DOWN LIST
                 var GroupDesc = Parse.Object.extend("Groups");
                 var query = new Parse.Query(GroupDesc);
@@ -167,12 +178,8 @@
                             if (i == 0) {
                                 ddl.options[i] = new Option("Select...", "")
                             }
-                            ddl.options[i + 1] = new Option(groupDesc[i].get("Description"), groupDesc[i].get("IdGroup"));
-                            groupsArray.push({
-                                groupDescription: groupDesc[i].get("Description"),
-                                groupId: groupDesc[i].get("IdGroup"),
-                                numberOfStudents: groupDesc[i].get("Students")
-                            });
+                            ddl.options[i + 1] = new Option(groupDesc[i].get("Description"), groupDesc[i].id);
+
                         }
                     },
                     error: function (object, error) {
@@ -189,12 +196,8 @@
                             if (i == 0) {
                                 ddlLoc.options[i] = new Option("Select...", "")
                             }
-                            ddlLoc.options[i + 1] = new Option(locationsDesc[i].get("Description"), locationsDesc[i].get("IdLocation"));
-                            locationsArray.push({
-                                locDescription: locationsDesc[i].get("Description"),
-                                locId: locationsDesc[i].get("IdLocation"),
-                                availableSeats: locationsDesc[i].get("Seats")
-                            });
+                            ddlLoc.options[i + 1] = new Option(locationsDesc[i].get("Description"), locationsDesc[i].id);
+
                         }
                     },
                     error: function (object, error) {
@@ -210,108 +213,83 @@
                         for (i = 0; i < examDesc.length; i++) {
                             if (i == 0)
                             { ddlExam.options[i] = new Option("Select...", "") }
-                            ddlExam.options[i + 1] = new Option(examDesc[i].get("Description"), examDesc[i].get("IdExam"));
-                            examsArray.push({
-                                examDescription: examDesc[i].get("Description"),
-                                examId: examDesc[i].get("IdExam")
-                            });
+                            ddlExam.options[i + 1] = new Option(examDesc[i].get("Description"), examDesc[i].id);
+
                         }
                     },
                     error: function (object, error) {
                         alert("Error loading data for Subjects/Exams")
                     }
                 });
-                //RETREIVING DATA TO FILL THE TABLE
-                var Prog = Parse.Object.extend("Programmation");
-                var queryProg = new Parse.Query(Prog);
-                queryProg.find({
-                    success: function (prog) {
-                        for (i = 0; i < prog.length; i++) {
-                            programmationArray.push({
-                                idExam: prog[i].get("IdExam"),
-                                idLocation: prog[i].get("IdLocation"),
-                                idGroup: prog[i].get("IdGroup"),
-                                programmedDate: prog[i].get("Date"),
-                                //id: prog[i].get("objectId")
-                                id: prog[i].id
-                            });
-                        }
-                        fillTable(groupsArray, locationsArray, examsArray, programmationArray);
-                        $('#tblExams').DataTable({
-                            "ordering": false,
-                            "searching": false,
-                            "lengthChange": false,
-                            "info": false,
-                            "pageLength": 10
+
+                fillTable();
+
+            }
+            function fillTable() {
+
+
+                var Posts = Parse.Object.extend("Programmation");
+                var querys = new Parse.Query(Posts);
+                querys.include("IdGroup");
+                querys.include("IdExam");
+                querys.include("IdLocation");
+                var postsArray = new Array();
+                querys.find().then(function (results) {
+                    /* Go Through Each Post */
+
+                    for (i in results) {
+                        /* Set obj to current post*/
+                        var obj = results[i];
+                        var idGrupo = obj.get("IdGroup").id;
+                        var DescriptionGrupo = obj.get("IdGroup").get("Description");
+                        var DescriptionLocation = obj.get("IdLocation").get("Description");
+                        var DescriptionExam = obj.get("IdExam").get("Description");
+                        var myDate = obj.get("Date")
+                        /* Let's Put the Post Information in an Array as an Object*/
+                        postsArray.push({
+
+                            myGroups: DescriptionGrupo,
+                            myLocations: DescriptionLocation,
+                            myExams: DescriptionExam,
+                            myDates: myDate,
+                            myIdGroup: idGrupo
+
                         });
-                    },
-                    error: function (object, error) {
-                        alert("Error loading data for Programmed Exams")
+                        localStorage["progs"] = JSON.stringify(postsArray);
                     }
                 });
+
+                //finishit();
+                
+
             }
-            function fillTable(groupsArray, locationsArray, examsArray, programmationArray) {
-                /*
-                var myUserGroupId = 0;
-
-                if (localStorage.getItem("username") != "" && localStorage.getItem("username") != undefined && localStorage.getItem("username") != "undefined") {
-                var queryUsr = new Parse.Query(Parse.User);
-                queryUsr.equalTo("username", localStorage.getItem("username"));  // find all the women
-                queryUsr.find({
-                success: function (myUserGroup) {
-                // Do stuff
-                for (n = 0; n < myUserGroup.length; n++) {
-                myUserGroupId = myUserGroup[n].get("IdGroup");
-                }
-                }
-                });
-                }*/
-            var currentUser = Parse.User.current();
-            currentUser.fetch({
-              success: function(currentUser) {
-                var comParent = currentUser.get("IdGroup");
-                var myUserName = currentUser.get("username");
-                 //alert(comParent); // this one should be right
-                 alert(comParent);
-            alert(myUserName);
-              }
-            });
-            
-
+            function finishit() {
+                var myuSER = "";
+                var programmationArray = new Array();
+                programmationArray = JSON.parse(localStorage["progs"]);
+                localStorage.removeItem("progs");
                 var mytable = document.getElementsByTagName("tbody")[0];
+                var myNum = 0;
+                try { myuSER = localStorage.myUser.toUpperCase() } catch (er) { }
                 for (k = 0; k < programmationArray.length; k++) {
 
                     var result2 = programmationArray[k];
+                    if (myuSER != "ADMIN" && localStorage.myGroup != result2.myIdGroup) {
+                        continue;
+                    }
                     //if (myUserGroupId == result2.idGroup || myUserGroupId == 0) {
-                    var myrow = mytable.insertRow(k);
+                    var myrow = mytable.insertRow(myNum);
+                    myNum++;
                     var cell1 = myrow.insertCell(0);
                     var cell2 = myrow.insertCell(1);
                     var cell3 = myrow.insertCell(2);
                     var cell4 = myrow.insertCell(3);
                     var cell5 = myrow.insertCell(4);
 
-                    for (x in groupsArray) {
-                        var result = groupsArray[x];
-                        if (result.groupId == result2.idGroup) {
-                            cell1.innerHTML = result.groupDescription;
-                            break;
-                        }
-                    }
-                    for (y in locationsArray) {
-                        var resultloc = locationsArray[y];
-                        if (resultloc.locId == result2.idLocation) {
-                            cell2.innerHTML = resultloc.locDescription;
-                            break;
-                        }
-                    }
-                    for (z in examsArray) {
-                        var resultExam = examsArray[z];
-                        if (resultExam.examId == result2.idExam) {
-                            cell3.innerHTML = resultExam.examDescription;
-                            break;
-                        }
-                    }
-                    cell4.innerHTML = formatedDate(result2.programmedDate);
+                    cell1.innerHTML = result2.myGroups;
+                    cell2.innerHTML = result2.myLocations;
+                    cell3.innerHTML = result2.myExams;
+                    cell4.innerHTML = formatedDate(new Date(result2.myDates));
                     //CHECK USER IS GUEST
                     if (isAdmin()) {
                         //ADDING DELETE BUTTON TO DELETE SCHEDULES
@@ -331,6 +309,13 @@
                         cell5.appendChild(btnDelete);
                     }
                 }
+                $('#tblExams').DataTable({
+                    "ordering": false,
+                    "searching": false,
+                    "lengthChange": false,
+                    "info": false,
+                    "pageLength": 10
+                });
 
                 //}
                 if (localStorage.getItem("guestUser") == "true") {
@@ -340,6 +325,8 @@
                     document.getElementById("lblUser").textContent = localStorage.getItem("username") + "  ||";
                 }
             }
+
+
         </script>
     </body>
 </html>
